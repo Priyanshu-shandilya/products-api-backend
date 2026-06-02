@@ -238,3 +238,31 @@ products-api/
 | 409 | Duplicate SKU |
 | 422 | Validation failure |
 | 500 | Unexpected server error |
+
+
+
+Sample Postman API's Collections:
+
+User Register:
+<img width="1404" height="853" alt="Screenshot 2026-06-02 203341" src="https://github.com/user-attachments/assets/539b9f64-0e9f-4f18-945f-fe26320784e2" />
+
+User Login with Product Id:
+<img width="1413" height="843" alt="image" src="https://github.com/user-attachments/assets/e1a48a79-e7f2-4e97-aa13-fbcf22f07d51" />
+
+Creating Product Using Bearer Token with Authentication:
+<img width="1413" height="843" alt="image" src="https://github.com/user-attachments/assets/a84b28fe-d986-4479-aacf-186bb5399f8f" />
+
+Updating the Product using Patch:
+<img width="1434" height="800" alt="image" src="https://github.com/user-attachments/assets/44b1dada-7d87-426e-bf52-c62077ddf3a2" />
+
+Getting Product using Product Id:
+<img width="1416" height="767" alt="image" src="https://github.com/user-attachments/assets/08796576-9a7e-449d-b271-ed5b072b128b" />
+
+Deleting the Product :
+<img width="1415" height="764" alt="image" src="https://github.com/user-attachments/assets/5b121c54-08dd-466e-8868-391aaa471813" />
+
+
+
+
+
+
