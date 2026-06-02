@@ -53,7 +53,7 @@ const productSchema = new mongoose.Schema(
       trim: true,
       uppercase: true,
       unique: true,
-      sparse: true,           // allows multiple null values
+      sparse: true,          
       maxlength: [40, "SKU cannot exceed 40 characters"],
     },
     isActive: {
@@ -70,25 +70,22 @@ const productSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true,           // adds createdAt / updatedAt automatically
+    timestamps: true,          
     versionKey: false,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
 
-// ── Indexes ────────────────────────────────────────────────────────────────────
-productSchema.index({ name: "text", description: "text" }); // full-text search
+productSchema.index({ name: "text", description: "text" }); 
 productSchema.index({ category: 1 });
 productSchema.index({ price: 1 });
 productSchema.index({ isActive: 1 });
 
-// ── Virtual: priceFormatted ───────────────────────────────────────────────────
 productSchema.virtual("priceFormatted").get(function () {
   return `$${this.price.toFixed(2)}`;
 });
 
-// ── Pre-save hook: sanitise tags ──────────────────────────────────────────────
 productSchema.pre("save", function (next) {
   this.tags = [...new Set(this.tags.map((t) => t.toLowerCase().trim()))];
   next();
