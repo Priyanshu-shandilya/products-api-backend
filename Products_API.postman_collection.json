@@ -1,0 +1,166 @@
+{
+  "info": {
+    "_postman_id": "products-api-collection",
+    "name": "Products API",
+    "description": "CRUD endpoints for the Products API (Express + MongoDB)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1", "type": "string" },
+    { "key": "productId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:3000/health",
+        "description": "Verify the server is running"
+      }
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "List Products (all)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "List Products (filtered)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products?category=electronics&minPrice=10&maxPrice=500&isActive=true&page=1&limit=10&sortBy=price&order=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                { "key": "category",  "value": "electronics" },
+                { "key": "minPrice",  "value": "10" },
+                { "key": "maxPrice",  "value": "500" },
+                { "key": "isActive",  "value": "true" },
+                { "key": "page",      "value": "1" },
+                { "key": "limit",     "value": "10" },
+                { "key": "sortBy",    "value": "price" },
+                { "key": "order",     "value": "asc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Full-text Search",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products?search=wireless headphones",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [{ "key": "search", "value": "wireless headphones" }]
+            }
+          }
+        },
+        {
+          "name": "Create Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data._id) {",
+                  "  pm.collectionVariables.set('productId', json.data._id);",
+                  "  console.log('Saved productId:', json.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/products",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Wireless Noise-Cancelling Headphones\",\n  \"description\": \"Premium over-ear headphones with 30-hour battery life.\",\n  \"price\": 299.99,\n  \"stock\": 150,\n  \"category\": \"electronics\",\n  \"sku\": \"WNC-HP-001\",\n  \"tags\": [\"audio\", \"wireless\", \"noise-cancelling\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/products/{{productId}}"
+          }
+        },
+        {
+          "name": "Replace Product (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/products/{{productId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Wireless Headphones Pro\",\n  \"description\": \"Updated full replacement.\",\n  \"price\": 349.99,\n  \"stock\": 120,\n  \"category\": \"electronics\",\n  \"sku\": \"WNC-HP-001\",\n  \"isActive\": true,\n  \"tags\": [\"audio\", \"pro\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Partial Update (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/products/{{productId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 279.99,\n  \"stock\": 200\n}"
+            }
+          }
+        },
+        {
+          "name": "Deactivate Product (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/products/{{productId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/products/{{productId}}"
+          }
+        },
+        {
+          "name": "404 — Unknown Route",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/does-not-exist"
+          }
+        },
+        {
+          "name": "422 — Validation Error (POST)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/products",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"X\",\n  \"price\": -5,\n  \"stock\": 1.5,\n  \"category\": \"invalid\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
