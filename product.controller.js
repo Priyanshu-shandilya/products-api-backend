@@ -2,7 +2,6 @@ const Product = require("./product.model");
 const { createError } = require("./errorHandler");
 const logger = require("./logger");
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 
 const getProductOrThrow = async (id) => {
   let product;
@@ -15,7 +14,6 @@ const getProductOrThrow = async (id) => {
   return product;
 };
 
-// ── Controllers ───────────────────────────────────────────────────────────────
 
 const listProducts = async (req, res, next) => {
   try {
