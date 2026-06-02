@@ -1,7 +1,6 @@
 const { body, query, validationResult } = require("express-validator");
 const { createError } = require("./errorHandler");
 
-/** Run accumulated express-validator checks and short-circuit on failure */
 const validate = (req, res, next) => {
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -14,7 +13,6 @@ const validate = (req, res, next) => {
   next();
 };
 
-// ── Reusable field rules ───────────────────────────────────────────────────────
 const CATEGORIES = ["electronics", "clothing", "food", "books", "sports", "home", "other"];
 
 const productRules = {
@@ -74,9 +72,7 @@ const productRules = {
     .withMessage("tags must be an array with at most 10 items"),
 };
 
-// ── Composed validators ───────────────────────────────────────────────────────
 
-/** POST /products */
 const createProductValidator = [
   productRules.nameRequired,
   productRules.description,
@@ -89,7 +85,6 @@ const createProductValidator = [
   validate,
 ];
 
-/** PUT /products/:id  (full replace — all required fields) */
 const replaceProductValidator = [
   productRules.nameRequired,
   productRules.description,
@@ -102,7 +97,6 @@ const replaceProductValidator = [
   validate,
 ];
 
-/** PATCH /products/:id  (partial update — all fields optional) */
 const updateProductValidator = [
   productRules.name,
   productRules.description,
@@ -116,7 +110,6 @@ const updateProductValidator = [
   validate,
 ];
 
-/** Query-string rules for GET /products */
 const listProductsValidator = [
   query("page").optional().isInt({ min: 1 }).withMessage("page must be a positive integer"),
   query("limit").optional().isInt({ min: 1, max: 100 }).withMessage("limit must be between 1 and 100"),
